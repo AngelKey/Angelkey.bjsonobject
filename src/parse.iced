@@ -33,3 +33,22 @@ exports.parse_key = parse_key = (key) ->
 
 #=============================================================
 
+exports.lookup = lookup = ({obj, key}) ->
+  [err, path] = parse_key key
+  loc = ""
+  i = 0
+  while obj? and not err? and i < path.length
+    front = path[i++]
+    obj = if typeof(obj) isnt 'object' then null
+    else if Array.isArray(obj) 
+      if front.type is 'array' then obj[front.key]
+      else null
+    else
+      if front.type is 'dict' then obj[front.key]
+      else null
+  return obj
+
+#=============================================================
+
+obj = { a : [ { b : [ 3, { c: "dog" }]}]}
+console.log lookup { obj, key : "a[0].b[1].c" }
