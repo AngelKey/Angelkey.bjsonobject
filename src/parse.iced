@@ -4,11 +4,10 @@
 exports.parse_key = parse_key = (key) ->
 
   err = null
+  out = []
 
   # First split into dict keys
   tmp = ({ type : 'dict', key : k } for k in key.split /\./)
-
-  out = []
 
   # Now deal with array indices, like 'foo[3][50][1]'
   for item in tmp
@@ -27,6 +26,7 @@ exports.parse_key = parse_key = (key) ->
         else
           err = new Error "bad array index: #{index}"
           break
+    break if err?
 
   out = null if err?
   return [err, out]
@@ -35,7 +35,6 @@ exports.parse_key = parse_key = (key) ->
 
 exports.lookup = lookup = ({obj, key}) ->
   [err, path] = parse_key key
-  loc = ""
   i = 0
   while obj? and not err? and i < path.length
     front = path[i++]
@@ -50,5 +49,3 @@ exports.lookup = lookup = ({obj, key}) ->
 
 #=============================================================
 
-obj = { a : [ { b : [ 3, { c: "dog" }]}]}
-console.log lookup { obj, key : "a[0].b[1].c" }
