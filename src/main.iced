@@ -1,3 +1,3 @@
 
-exports.Encoder = require('./encode').Encoder
-exports.Decoder = require('./decode').Decoder
+exports.encode = require('./encode').encode
+exports.baccess = require('./decode').baccess
