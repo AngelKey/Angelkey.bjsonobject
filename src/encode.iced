@@ -26,19 +26,14 @@ encode_mpack = ({ obj, encoding }) ->
 
 #=================================================
 
-rewrite_json_obj = (o, last_key = null) ->
+rewrite_json_obj = (o) ->
   if typeof(o) isnt 'object' then o
-  else if Array.isArray(o) then (rewrite_json_obj(e, last_key) for e in o)
-  else if Buffer.isBuffer(o)
-    enc = if not last_key? then 'base64'
-    else if last_key in ['uid', 'id', 'fingerprint'] then 'hex'
-    else if last_key.match /_(id|fingerprint)$/ then 'hex'
-    else 'base64'
-    o.toString enc
+  else if Array.isArray(o) then (rewrite_json_obj(e) for e in o)
+  else if Buffer.isBuffer(o) then { __b : o.toString('base64') }
   else
     out = {}
     for k,v of o
-      out[k] = rewrite_json_obj(v,k)
+      out[k] = rewrite_json_obj(v)
     out
 
 #=================================================
