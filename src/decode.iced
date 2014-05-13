@@ -33,6 +33,3 @@ exports.parse_key = parse_key = (key) ->
 
 #=============================================================
 
-console.log parse_key "[0].foo.bar[4][4][2].jam.joudy[3]"
-
-exports.baccess = (obj, path) ->
