@@ -14,7 +14,7 @@ exports.encode = encode = ({obj, json, mpack, encoding}) ->
 #=================================================
 
 encode_json = (obj) ->
-  o2 = rewrite_json_obj obj
+  o2 = encode_json_obj obj
   JSON.stringify o2
 
 #=================================================
@@ -26,14 +26,14 @@ encode_mpack = ({ obj, encoding }) ->
 
 #=================================================
 
-rewrite_json_obj = (o) ->
+exports.encode_json_obj = encode_json_obj = (o) ->
   if typeof(o) isnt 'object' then o
-  else if Array.isArray(o) then (rewrite_json_obj(e) for e in o)
+  else if Array.isArray(o) then (encode_json_obj(e) for e in o)
   else if Buffer.isBuffer(o) then { __b : o.toString('base64') }
   else
     out = {}
     for k,v of o
-      out[k] = rewrite_json_obj(v)
+      out[k] = encode_json_obj(v)
     out
 
 #=================================================
