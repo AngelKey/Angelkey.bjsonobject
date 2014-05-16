@@ -3,6 +3,7 @@ mods = [
   require('./encode')
   require('./decode')
   require('./parse')
+  require('./mime')
 ]
 for mod in mods
   for k,v of mod

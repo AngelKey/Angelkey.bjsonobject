@@ -3,13 +3,13 @@ purepack = require 'purepack'
 
 #=================================================
 
-exports.encode = encode = ({obj, json, mpack, encoding}) ->
+exports.encode = encode = ({obj, json, msgpack, encoding}) ->
   if json then json = true
-  else if mpack then json = false
+  else if msgpack then json = false
   else json = true
 
   if json then encode_json obj
-  else encode_mpack { obj, encoding }
+  else encode_msgpack { obj, encoding }
 
 #=================================================
 
@@ -19,7 +19,7 @@ encode_json = (obj) ->
 
 #=================================================
 
-encode_mpack = ({ obj, encoding }) ->
+encode_msgpack = ({ obj, encoding }) ->
   o2 = purepack.pack obj
   if encoding? then o2.toString encoding
   else o2

@@ -12,7 +12,8 @@ lib/%.js: src/%.iced
 $(BUILD_STAMP): \
 	lib/decode.js \
 	lib/encode.js \
-        lib/parse.js \
+    lib/parse.js \
+    lib/mime.js \
 	lib/main.js
 	date > $@
 

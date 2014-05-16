@@ -3,10 +3,14 @@ purepack = require 'purepack'
 
 #=================================================================
 
-exports.decode = decode = ({buf, json, mpack}) ->
+exports.decode = decode = ({buf, json, msgpack}) ->
   if json then json = true
-  else if mpack then json = false
+  else if msgpack then json = false
   else json = true
+
+  if encoding? and (encoding in [ 'hex', 'base64'] )
+    s = buf.toString 'utf8'
+    buf = new Buffer s, encoding
 
   if json then decode_json buf
   else purepack.unpack buf
