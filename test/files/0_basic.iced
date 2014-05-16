@@ -7,20 +7,13 @@ eobj = null
 
 #========================================================
 
-exports.encode_json_1  = (T, cb) ->
+exports.init = (T,cb) ->
+
   obj =
     id : prng(10)
     uid : prng(12)
-    foos : [
-      10,
-      20,
-      30,
-      prng(40)
-    ],
-    uids : [
-      [prng(3), prng(10),[prng(4), [prng(5)]]],
-      prng(20)
-    ]
+    foos : [10, 20, 30, prng(40) ],
+    uids : [[prng(3), prng(10),[prng(4), [prng(5)]]], prng(20) ]
     bars :
       pgp_fingerprint : prng(20)
       buxes : 
@@ -29,6 +22,13 @@ exports.encode_json_1  = (T, cb) ->
         dog : prng(6)
       dig : 10
       blah : prng(5)
+  cb()
+
+#========================================================
+
+
+exports.encode_json_1  = (T, cb) ->
+
   eobj = encode { obj }
   T.assert eobj?, "it came out"
   tmp = JSON.parse eobj
@@ -56,10 +56,26 @@ exports.encode_json_1  = (T, cb) ->
 #========================================================
 
 exports.decode_json_1 = (T,cb) ->
-  out = decode { buf : eobj, json : true }
+  [err,out] = decode { buf : eobj }
+  T.no_error err
   T.assert out?, "decode came back"
   T.equal out, obj, "same as before"
   cb()
 
 #========================================================
 
+round_trip = (T, encoding, cb) ->
+  buf = encode { obj, encoding }
+  [err, y] = decode { buf, encoding }
+  T.no_error err
+  T.assert y?, "something came back"
+  T.equal obj, y, "equality achieved"
+  cb()
+
+#========================================================
+
+exports.test_json = (T,cb) -> round_trip T, "json", cb
+exports.test_msgpack = (T,cb) -> round_trip T, "msgpack", cb
+exports.test_msgpack64 = (T,cb) -> round_trip T, "msgpack64", cb
+
+#========================================================

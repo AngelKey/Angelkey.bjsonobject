@@ -1,5 +1,6 @@
 
-{decode, decode_json_obj, encode} = require './encode'
+{encode} = require './encode'
+{decode,decode_json_obj} = require './decode'
 {mime_types} = require './mime'
 
 #===========================================================================

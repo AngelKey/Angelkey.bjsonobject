@@ -3,17 +3,29 @@ purepack = require 'purepack'
 
 #=================================================================
 
-exports.decode = decode = ({buf, json, msgpack}) ->
-  if json then json = true
-  else if msgpack then json = false
-  else json = true
+exports.decode = decode = ({buf, encoding}) ->
+  encoding or= 'json'
+  if encoding is 'json' then decode_json buf
+  else if encoding in [ 'msgpack', 'msgpack64' ] then decode_msgpack { buf, encoding }
+  else [ new Error("unknown encoding type: #{encoding}"), null ]
 
-  if encoding? and (encoding in [ 'hex', 'base64'] )
-    s = buf.toString 'utf8'
-    buf = new Buffer s, encoding
+#================================================================================
 
-  if json then decode_json buf
-  else purepack.unpack buf
+decode_msgpack = ( {buf, encoding} ) ->
+  err = ret = null
+
+  if encoding is 'msgpack64' 
+    s = if Buffer.isBuffer(buf) then buf.toString('utf8') else buf
+    buf = new Buffer s, 'base64'
+    if buf.length is 0
+      err = new Error "Bad-base64 encoding"
+
+  unless err?
+    try
+      ret = purepack.unpack buf
+    catch e
+      err = e
+  return [err, ret]
   
 #=================================================================
 
@@ -37,7 +49,13 @@ exports.decode_json_obj = decode_json_obj = (o) ->
 #=================================================================
 
 decode_json = (buf) ->
-  decode_json_obj JSON.parse buf
+  err = ret = null
+  try 
+    obj = JSON.parse buf
+  catch e
+    err = new Error "Error parsing JSON: #{e.message}"
+  ret = decode_json_obj(obj) unless err?
+  return [err, ret]
 
 #=================================================================
 
