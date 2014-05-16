@@ -27,16 +27,24 @@ encode_mpack = ({ obj, encoding }) ->
 #=================================================
 
 exports.encode_json_obj = encode_json_obj = (o) ->
-  if typeof(o) isnt 'object' then o
-  else if Array.isArray(o) then (encode_json_obj(e) for e in o)
-  else if Buffer.isBuffer(o) then { __b : o.toString('base64') }
-  else
-    out = {}
-    for k,v of o
-      out[k] = encode_json_obj(v)
-    out
+
+  _is_hex_key = (key) -> key?.match /(^|_)(fingerprint|u?id)s?$/
+
+  _encode_json_obj = (o, last_key) ->
+    if typeof(o) isnt 'object' then o
+    else if Array.isArray(o) then (_encode_json_obj(e, last_key) for e in o)
+    else if Buffer.isBuffer(o) 
+      if _is_hex_key last_key then { __h : o.toString('hex') }
+      else { __b : o.toString('base64') }
+    else
+      out = {}
+      for k,v of o
+        out[k] = _encode_json_obj(v, k)
+      out
+
+  _encode_json_obj o, null
 
 #=================================================
 
-console.log encode { obj : { id : new Buffer([1,2,3,4]), foo_id : [ new Buffer([50,11,34]), 4 ] , jam : new Buffer [44,22,33,44,22,33,22] } }
+console.log encode { obj : { id : new Buffer([1,2,3,4]), foo_id : [ { shit : new Buffer([33,22,33]) }, new Buffer([50,11,34]), 4 ] , jam : new Buffer [44,22,33,44,22,33,22] } }
 
