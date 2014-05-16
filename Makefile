@@ -14,7 +14,8 @@ $(BUILD_STAMP): \
 	lib/encode.js \
     lib/parse.js \
     lib/mime.js \
-	lib/main.js
+	lib/main.js \
+	lib/http.js
 	date > $@
 
 clean:
