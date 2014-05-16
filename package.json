@@ -24,5 +24,9 @@
   "dependencies": {
     "purepack": "^1.0.0",
     "iced-coffee-script": "^1.7.1-b"
+  },
+  "devDependencies": {
+    "minimist": "^0.1.0",
+    "iced-test": "0.0.15"
   }
 }

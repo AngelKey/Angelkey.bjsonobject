@@ -46,5 +46,3 @@ exports.encode_json_obj = encode_json_obj = (o) ->
 
 #=================================================
 
-console.log encode { obj : { id : new Buffer([1,2,3,4]), foo_id : [ { shit : new Buffer([33,22,33]) }, new Buffer([50,11,34]), 4 ] , jam : new Buffer [44,22,33,44,22,33,22] } }
-

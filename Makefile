@@ -12,11 +12,15 @@ lib/%.js: src/%.iced
 $(BUILD_STAMP): \
 	lib/decode.js \
 	lib/encode.js \
+        lib/parse.js \
 	lib/main.js
 	date > $@
 
 clean:
 	find lib -type f -name *.js -exec rm {} \;
+
+test:
+	cd test && iced run.iced
 
 build: $(BUILD_STAMP) 
 
