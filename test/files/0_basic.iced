@@ -1,9 +1,11 @@
 
 {prng} = require 'crypto'
-{lookup,encode} = require '../../lib/main'
+{decode,lookup,encode} = require '../../lib/main'
 
 obj = null
 eobj = null
+
+#========================================================
 
 exports.encode_json_1  = (T, cb) ->
   obj =
@@ -43,6 +45,7 @@ exports.encode_json_1  = (T, cb) ->
     "bars.pgp_fingerprint.__h"
     "bars.buxes.x_id.__h"
     "bars.buxes.y_id.__h"
+    "bars.buxes.dog.__b"
     "bars.blah.__b"
   ]
 
@@ -50,5 +53,13 @@ exports.encode_json_1  = (T, cb) ->
     T.assert lookup({obj : tmp, key : k }), "path #{k}"
   cb()
 
+#========================================================
 
+exports.decode_json_1 = (T,cb) ->
+  out = decode { buf : eobj, json : true }
+  T.assert out?, "decode came back"
+  T.equal out, obj, "same as before"
+  cb()
+
+#========================================================
 

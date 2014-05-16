@@ -13,7 +13,7 @@ exports.decode = decode = ({buf, json, mpack}) ->
   
 #=================================================================
 
-exports.decode_json_obj = rewrite_json_obj = (o) ->
+exports.decode_json_obj = decode_json_obj = (o) ->
 
   _to_buffer = (o) ->
     if Object.keys(o).length isnt 1 then null
