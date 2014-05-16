@@ -14,9 +14,16 @@ exports.decode = decode = ({buf, json, mpack}) ->
 #=================================================================
 
 exports.decode_json_obj = rewrite_json_obj = (o) ->
+
+  _to_buffer = (o) ->
+    if Object.keys(o).length isnt 1 then null
+    else if (b = o.__b)? then new Buffer b, 'base64'
+    else if (b = o.__h)? then new Buffer b, 'hex'
+    else null
+
   if typeof(o) isnt 'object' then o
   else if Array.isArray(o) then (decode_json_obj(e) for e in o)
-  else if (keys = Object.keys o).length is 1 and (b = o.__b)? then new Buffer b, 'base64'
+  else if (b = _to_buffer(o)) then b 
   else
     out = {}
     for k,v of o
