@@ -1,5 +1,5 @@
 {
-  "name": "kbjo",
+  "name": "keybase-bjson-core",
   "version": "0.0.0",
   "description": "Keybase json-object encoding conventions",
   "main": "lib/main.js",
