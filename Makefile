@@ -15,7 +15,9 @@ $(BUILD_STAMP): \
     lib/parse.js \
     lib/mime.js \
 	lib/main.js \
-	lib/http.js
+	lib/http.js \
+   	lib/checkers.js \
+	lib/template.js 
 	date > $@
 
 clean:

@@ -26,7 +26,6 @@ exports.init = (T,cb) ->
 
 #========================================================
 
-
 exports.encode_json_1  = (T, cb) ->
 
   eobj = encode { obj }
