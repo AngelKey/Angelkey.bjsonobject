@@ -22,6 +22,14 @@ checkers.buffer = (min = null, max = null) -> (x) ->
 
 ##-----------------------------------------------------------------------
 
+checkers.intval = (min = null, max = null) -> (x) ->
+  if typeof(x) isnt 'number' then E("expected a number")
+  else if min? and x < min then E("Value must be >= #{min}")
+  else if max? and x > max then E("Value must be <= #{max}")
+  else null
+
+##-----------------------------------------------------------------------
+
 checkers.value = (v) -> (x) ->
   if (a = typeof(v)) isnt (b = typeof(x)) then E("Type mismatch: #{a} != #{b}")
   else if v isnt x then E("Value mismatch: #{v} != #{x}")
