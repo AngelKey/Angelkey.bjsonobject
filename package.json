@@ -1,6 +1,6 @@
 {
   "name": "keybase-bjson-core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Keybase json-object encoding conventions",
   "main": "lib/main.js",
   "scripts": {
