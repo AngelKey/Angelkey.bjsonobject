@@ -1,12 +1,34 @@
-
 purepack = require 'purepack'
+{C} = require('./const')
+
+#=================================================
+
+fix_encoding = (e) ->
+  e = 'json' if not e? or not C.encodings.codes[e]
+  return e
 
 #=================================================
 
 exports.encode = encode = ({obj, encoding}) ->
-  encoding or= 'json'
-  if encoding in ['msgpack', 'msgpack64'] then encode_msgpack { obj, encoding }
+  encoding = fix_encoding encoding
+
+  out = if encoding in ['msgpack', 'msgpack64'] then encode_msgpack { obj, encoding }
   else encode_json obj
+
+  # Always return a buffer... In the case of json or msgpack64, it is safe
+  # to interpret the input as just utf8 characters.
+  out = new Buffer(out, 'utf8') unless Buffer.isBuffer(out)
+  return out
+
+#=================================================
+
+exports.self_describing_encode = ({obj, encoding}) ->
+  encoding = fix_encoding encoding
+
+  Buffer.concat [
+    new Buffer([ C.version.V1, C.encodings.codes[encoding] ]),
+    encode({ obj, encoding })
+  ]
 
 #=================================================
 

@@ -1,5 +1,6 @@
 
 purepack = require 'purepack'
+{C} = require('./const')
 
 #=================================================================
 
@@ -8,6 +9,19 @@ exports.decode = decode = ({buf, encoding}) ->
   if encoding is 'json' then decode_json buf
   else if encoding in [ 'msgpack', 'msgpack64' ] then decode_msgpack { buf, encoding }
   else [ new Error("unknown encoding type: #{encoding}"), null ]
+
+#================================================================================
+
+exports.self_describing_decode = ({buf}) ->
+  obj = null
+  err = if buf.length < 3 then new Error "Need buffer >= 3 bytes long"
+  else if buf[0] isnt C.version.V1 then new Error "Can only handle V1"
+  else if not (encoding = C.encodings.lookup[buf[1]])?
+    new Error "Unknown encoding type: #{buf[1]}"
+  else
+    [err, obj] = decode { buf : buf[2...], encoding }
+    err
+  return [err, obj]
 
 #================================================================================
 

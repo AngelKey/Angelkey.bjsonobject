@@ -23,7 +23,8 @@
   "homepage": "https://github.com/keybase/json-object",
   "dependencies": {
     "purepack": "^1.0.0",
-    "iced-coffee-script": "^1.7.1-b"
+    "iced-coffee-script": "^1.7.1-b",
+    "iced-utils": "^0.1.14"
   },
   "devDependencies": {
     "minimist": "^0.1.0",
