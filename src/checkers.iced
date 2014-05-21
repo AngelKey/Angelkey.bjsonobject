@@ -27,6 +27,14 @@ checkers.buffer = (min = null, max = null) -> (x) ->
 
 ##-----------------------------------------------------------------------
 
+checkers.string = (min = null, max = null) -> (x) ->
+  if typeof(x) isnt 'string' then E("expected a string")
+  else if min? and x.length < min then E("String must have >= #{min} chars")
+  else if max? and x.length > max then E("String must have <= #{max} chars")
+  else null
+
+##-----------------------------------------------------------------------
+
 checkers.intval = (min = null, max = null) -> (x) ->
   if typeof(x) isnt 'number' then E("expected a number")
   else if min? and x < min then E("Value must be >= #{min}")
