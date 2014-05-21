@@ -6,10 +6,15 @@ exports.checkers = checkers = {}
 
 ##-----------------------------------------------------------------------
 
-checkers.array = check_array = (min = null, max = null) -> (x) ->
+checkers.array = check_array = ({min,max,checker}) -> (x) ->
   if typeof(x) isnt 'object' or not Array.isArray(x) then E("expected an array")
   else if min? and x.length < min then E("Array must have > #{min} elements")
   else if max? and x.length > max then E("Array must have < #{max} elements")
+  else if checker?
+    err = null
+    for el,i in x
+      break if (err = checker(el,i))?
+    err
   else null
 
 ##-----------------------------------------------------------------------

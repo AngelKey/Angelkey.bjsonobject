@@ -42,3 +42,8 @@ exports.check_template = check = (template, obj, path = "$") ->
 
 #-------------------------------------------------------------------------------
 
+exports.subchecker = (template) -> (obj,path) -> check template, obj, path
+exports.arr_subchecker = (template) -> (obj,path) -> check template, obj, "[#{path}]"
+
+#-------------------------------------------------------------------------------
+
