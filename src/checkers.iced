@@ -8,8 +8,8 @@ exports.checkers = checkers = {}
 
 checkers.array = check_array = ({min,max,checker}) -> (x) ->
   if typeof(x) isnt 'object' or not Array.isArray(x) then E("expected an array")
-  else if min? and x.length < min then E("Array must have > #{min} elements")
-  else if max? and x.length > max then E("Array must have < #{max} elements")
+  else if min? and x.length < min then E("Array must have >= #{min} elements")
+  else if max? and x.length > max then E("Array must have <= #{max} elements")
   else if checker?
     err = null
     for el,i in x
@@ -21,8 +21,8 @@ checkers.array = check_array = ({min,max,checker}) -> (x) ->
 
 checkers.buffer = (min = null, max = null) -> (x) ->
   if typeof(x) isnt 'object' or not Buffer.isBuffer(x) then E("expected a buffer")
-  else if min? and x.length < min then E("Buffer must have > #{min} bytes")
-  else if max? and x.length > max then E("Buffer must have < #{max} bytes")
+  else if min? and x.length < min then E("Buffer must have >= #{min} bytes")
+  else if max? and x.length > max then E("Buffer must have <= #{max} bytes")
   else null
 
 ##-----------------------------------------------------------------------
@@ -35,11 +35,16 @@ checkers.string = (min = null, max = null) -> (x) ->
 
 ##-----------------------------------------------------------------------
 
-checkers.intval = (min = null, max = null) -> (x) ->
+checkers.intval = intval = (min = null, max = null) -> (x) ->
   if typeof(x) isnt 'number' then E("expected a number")
   else if min? and x < min then E("Value must be >= #{min}")
   else if max? and x > max then E("Value must be <= #{max}")
   else null
+
+##-----------------------------------------------------------------------
+
+checkers.nnint = intval(0)
+checkers.pint = intval(1)
 
 ##-----------------------------------------------------------------------
 
