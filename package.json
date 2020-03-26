@@ -27,7 +27,7 @@
     "iced-utils": "^0.1.14"
   },
   "devDependencies": {
-    "minimist": "^0.1.0",
+    "minimist": "^1.2.5",
     "iced-test": "0.0.15"
   }
 }
